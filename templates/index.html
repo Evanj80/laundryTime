@@ -12,6 +12,7 @@
 <script src="main.js"></script>
 
 <body>
+  <!-- <div class="overlay"></div> -->
 
     <nav class="navbar navbar-expand-md">
         <a class="navbar-brand" href="#">Logo</a>
@@ -32,12 +33,35 @@
           </ul>
         </div>
     </nav>
+
     <header class="page-header header container-fluid">
-    </header>
-    <div class="overlay"></div>
-    <div class="description">
+
+      <div class="description">
         <h1>Number of avalible laundry machines in College Nine</h1>
         <!-- <p>{{.Name}}{{.Status}}</p> -->
       </div>
+      <table style="width:100%" bgcolor="#ccccff">
+        
+        <tr>
+          <th>Laundry Room</th>
+          <th>Washer</th>
+          <th>Dryer</th>
+        </tr>
+        <tr>
+          <td>{{Name}}</td>
+          <td>Smith</td>
+          <td>50</td>
+        </tr>
+        <tr>
+          <td>Eve</td>
+          <td>Jackson</td>
+          <td>94</td>
+        </tr>
+      </table>
+    </header>
+
+  
+      
+
 </body>
 </html>
