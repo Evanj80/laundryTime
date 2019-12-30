@@ -11,16 +11,20 @@ import (
 	"strconv"
 )
 
-type RoomID struct {
-	machines []Machine
+type Machine struct {
+	RoomNum     string
+	MachineType string
+	Status      int
 }
 
-type Machine struct {
-	Name   string
-	Status int
+type RoomTotal struct {
+	RoomNum string
+	Washer  int
+	Dryer   int
 }
 
 var laundryMachines []Machine
+var laundryRoomContent []RoomTotal
 
 func changeStatus(w http.ResponseWriter, r *http.Request) {
 
@@ -35,7 +39,7 @@ func changeStatus(w http.ResponseWriter, r *http.Request) {
 	fmt.Print(l.Status)
 	counter := 0
 	for index, _ := range laundryMachines {
-		if laundryMachines[index].Name == l.Name {
+		if laundryMachines[index].MachineType == l.MachineType && laundryMachines[index].RoomNum == l.RoomNum {
 			laundryMachines[index].Status = l.Status
 			counter++
 		}
@@ -43,8 +47,41 @@ func changeStatus(w http.ResponseWriter, r *http.Request) {
 	if counter == 0 {
 		laundryMachines = append(laundryMachines, l)
 	}
-	fmt.Println(laundryMachines)
+	counter = 0
+	if l.MachineType == "Washer" {
+		for index, _ := range laundryRoomContent {
+			if laundryRoomContent[index].RoomNum == l.RoomNum {
+				laundryRoomContent[index].Washer = laundryRoomContent[index].Washer + l.Status
+				counter++
+			}
+		}
+		if counter == 0 {
+			var x RoomTotal
+			x.RoomNum = l.RoomNum
+			x.Washer = 1
+			x.Dryer = 0
+			laundryRoomContent = append(laundryRoomContent, x)
+		}
 
+	}
+	if l.MachineType == "Dryer" {
+		for index, _ := range laundryRoomContent {
+			if laundryRoomContent[index].RoomNum == l.RoomNum {
+				laundryRoomContent[index].Dryer = laundryRoomContent[index].Dryer + l.Status
+				counter++
+			}
+		}
+		if counter == 0 {
+			var x RoomTotal
+			x.RoomNum = l.RoomNum
+			x.Washer = 0
+			x.Dryer = 1
+			laundryRoomContent = append(laundryRoomContent, x)
+		}
+
+	}
+	fmt.Println(laundryMachines)
+	fmt.Println(laundryRoomContent)
 }
 
 func getStatus(w http.ResponseWriter, r *http.Request) int {
@@ -56,7 +93,7 @@ func getStatus(w http.ResponseWriter, r *http.Request) int {
 	}
 	found := 0
 	for index, v := range laundryMachines {
-		if v.Name == l.Name {
+		if v.MachineType == l.MachineType {
 			found = index
 		}
 	}
@@ -67,7 +104,10 @@ func getStatus(w http.ResponseWriter, r *http.Request) int {
 }
 
 func main() {
-	//Must make a post request with a JSON in the body containing {"name":"{UUID}","status": {newstatus}} Update status to either 1 or 2
+	//Must make a post request with a JSON in the body Update status to either 1 or -1
+	//Example Curl
+	//curl -d '{"roomnum" : "collegenine", "MachineType":"Dryer", "status" : -1}' -H "Content-Type: application/json" -X POST http://localhost:8081/statusChange
+
 	http.HandleFunc("/statusChange", func(w http.ResponseWriter, r *http.Request) {
 		changeStatus(w, r)
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
@@ -80,9 +120,9 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		for index, _ := range laundryMachines {
-			tmpl.Execute(w, laundryMachines[index])
-		}
+		// for index, _ := range laundryMachines {
+		tmpl.Execute(w, laundryRoomContent)
+		// }
 	})
 
 	//Must make a post request with a JSON in the body containing {"name":"{UUID}"}
