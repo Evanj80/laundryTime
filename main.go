@@ -7,7 +7,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"path"
 	"strconv"
 )
 
@@ -114,14 +113,17 @@ func main() {
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fp := path.Join("templates", "index.html")
-		tmpl, err := template.ParseFiles(fp)
+
+		t, err := template.ParseFiles("templates/index.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		// for index, _ := range laundryMachines {
-		tmpl.Execute(w, laundryRoomContent)
+		err = t.Execute(w, laundryRoomContent)
+		if err != nil {
+			panic(err)
+		}
 		// }
 	})
 

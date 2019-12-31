@@ -11,7 +11,6 @@
   <script src="main.js"></script>
 
 </head>
-
 <body>
   <!-- <div class="overlay"></div> -->
 
@@ -39,28 +38,34 @@
 
       <div class="description">
         <h1>Number of avalible laundry machines in College Nine</h1>
-        <!-- <p>{{.Name}}{{.Status}}</p> -->
       </div>
       <table style="width:100%" bgcolor="#ccccff">
-        
         <tr>
           <th>Laundry Room</th>
           <th>Washers</th>
           <th>Dryers</th>
         </tr>
+        {{range .}}
+        {{if eq .RoomNum "NineTenApt"}}
         <tr>
           <!-- NEED TO DYNAMICALLY CREATE A TABLE IN ORDER TO FILL IN SPACES -->
           <!-- I need to figure out how to use templates effectively in GO -->
           <!-- Also need to figure out how to get bootstrap front end to work -->
           <td>College Nine/Ten Apartments</td>
-          <td>{{.Status}}</td>
-          <td>{{.Status}}</td>
+          <td>{{.Washer}}</td>
+          <td>{{.Dryer}}</td>
         </tr>
+        {{end}}
+        {{end}}
+        {{range .}}
+        {{if eq .RoomNum "ILCApt"}}
         <tr>
-          <td>Eve</td>
-          <td>Jackson</td>
-          <td>94</td>
+          <td>ILC Apartments</td>
+          <td>{{ .Washer }}</td>
+          <td>{{ .Dryer }}</td>
         </tr>
+        {{end}}
+        {{end}}
       </table>
     </header>
 
