@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"github.com/gorilla/mux"
+
 )
 
 type Machine struct {
@@ -106,26 +108,48 @@ func main() {
 	//Must make a post request with a JSON in the body Update status to either 1 or -1
 	//Example Curl
 	//curl -d '{"roomnum" : "collegenine", "MachineType":"Dryer", "status" : -1}' -H "Content-Type: application/json" -X POST http://localhost:8081/statusChange
-
+	r := mux.NewRouter()
 	http.HandleFunc("/statusChange", func(w http.ResponseWriter, r *http.Request) {
 		changeStatus(w, r)
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		t, err := template.ParseFiles("templates/index.html")
+		// f, err := os.Open("templates/index.html")
+		// stat, err := f.Stat()
+		// if err != nil {
+		// 	http.Error(w, err.Error(), http.StatusInternalServerError)
+		// 	return
+		// }
+		// buf := make([]byte, stat.Size())
+
+		// f.Read(buf)
+		// fmt.Printf("%s\n", buf)
+
+		// t, err := template.New("test").Parse(string(buf))
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		fmt.Printf("r: %+v\n w: %+v\n", r, w)
 		// for index, _ := range laundryMachines {
+		var a RoomTotal
+		a.RoomNum = "NineTenApt"
+		a.Washer = 1
+		a.Dryer = 0
+		laundryRoomContent = append(laundryRoomContent, a)
 		err = t.Execute(w, laundryRoomContent)
 		if err != nil {
 			panic(err)
 		}
 		// }
 	})
+	r.PathPrefix("/css/").Handler(http.StripPrefix("/css/",
+		http.FileServer(http.Dir("templates/css/"))))
+	http.Handle("/", r)
+
 
 	//Must make a post request with a JSON in the body containing {"name":"{UUID}"}
 	http.HandleFunc("/machineID", func(w http.ResponseWriter, r *http.Request) {
