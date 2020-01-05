@@ -8,8 +8,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"github.com/gorilla/mux"
 
+	"github.com/gorilla/mux"
 )
 
 type Machine struct {
@@ -109,7 +109,9 @@ func main() {
 	//Example Curl
 	//curl -d '{"roomnum" : "collegenine", "MachineType":"Dryer", "status" : -1}' -H "Content-Type: application/json" -X POST http://localhost:8081/statusChange
 	r := mux.NewRouter()
-	http.HandleFunc("/statusChange", func(w http.ResponseWriter, r *http.Request) {
+	d := mux.NewRouter()
+	f := mux.NewRouter()
+	d.HandleFunc("/statusChange", func(w http.ResponseWriter, r *http.Request) {
 		changeStatus(w, r)
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
@@ -148,11 +150,9 @@ func main() {
 	})
 	r.PathPrefix("/css/").Handler(http.StripPrefix("/css/",
 		http.FileServer(http.Dir("templates/css/"))))
-	http.Handle("/", r)
-
 
 	//Must make a post request with a JSON in the body containing {"name":"{UUID}"}
-	http.HandleFunc("/machineID", func(w http.ResponseWriter, r *http.Request) {
+	f.HandleFunc("/machineID", func(w http.ResponseWriter, r *http.Request) {
 		i := getStatus(w, r)
 		fmt.Println(i)
 		if i == 0 {
@@ -164,6 +164,9 @@ func main() {
 		}
 
 	})
+	http.Handle("/", r)
+	http.Handle("/machineID", f)
+	http.Handle("/statusChange", d)
 	log.Fatal(http.ListenAndServe(":8081", nil))
 
 }
