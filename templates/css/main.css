@@ -5,11 +5,11 @@ body {
   }
   /*--- navigation bar ---*/
   .navbar {
-    background:#6ab446;
+    background:rgb(225, 237, 241);
   }
   .nav-link,
   .navbar-brand {
-    color: #fff;
+    color: rgb(90, 89, 89);
     cursor: pointer;
   }
   .nav-link {
@@ -23,7 +23,7 @@ body {
   }
 
   .header {
-    background-image: url('laundry.jpg');
+    background-image: url('69.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -40,43 +40,44 @@ body {
   .description {
     left: 50%;
     position: absolute;
-    top: 45%;
+    top: 5%;
     transform: translate(-50%, -55%);
     text-align: center;
   }
   .description h1 {
-    color: #6ab446;
+    color: black;
   }
   .description p {
-    color: #fff;
-    font-size: 1.3rem;
-    line-height: 1.5;
+    color: rgb(90, 89, 89);
+    font-size: 1 rem;
+    line-height: 1;
   }
   table, th, td {
-    border: 1px solid black;
+    border: 2px solid rgb(90, 89, 89);
+    
 
   }
   table, th, td {
-    border: 1px solid black;
+    border: 2px solid rgb(90, 89, 89);
     border-collapse: collapse;
     
   }
   th, td {
-    padding: 15px;
+    padding: 10px;
     
   }
 
   table#t01 tr:nth-child(even) {
-    background-color: #eee;
+    background-color: rgb(90, 89, 89);
   }
   table#t01 tr:nth-child(odd) {
-    background-color: #fff;
+    background-color: rgb(90, 89, 89);
     text-align: center;
 
   }
   table#t01 th {
-    color: white;
-    background-color: black;
+    color: rgb(90, 89, 89);
+    background-color: rgb(90, 89, 89);
     text-align: center;
 
   }

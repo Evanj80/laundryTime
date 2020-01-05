@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Tutorial Sample Page</title>
+  <title>Slug Laundry</title>
   <meta charset="utf-8">
+  <!-- <a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by Hello-Pixel - www.freepik.com</a> -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -36,10 +37,10 @@
 
     <header class="page-header header container-fluid">
 
-      <div class="description">
-        <h1>Number of avalible laundry machines in College Nine</h1>
-      </div>
-      <table style="width:100%" bgcolor="#ccccff">
+      <!-- <div class="description">
+        <h1>Avalible laundry machines in College Nine</h1>
+      </div> -->
+      <table style="width:100%" bgcolor="#E1EDF1">
         <tr>
           <th>Laundry Room</th>
           <th>Washers</th>
@@ -50,7 +51,6 @@
         <tr>
           <!-- NEED TO DYNAMICALLY CREATE A TABLE IN ORDER TO FILL IN SPACES -->
           <!-- I need to figure out how to use templates effectively in GO -->
-          <!-- Also need to figure out how to get bootstrap front end to work -->
           <td>College Nine/Ten Apartments</td>
           <td>{{.Washer}}</td>
           <td>{{.Dryer}}</td>
